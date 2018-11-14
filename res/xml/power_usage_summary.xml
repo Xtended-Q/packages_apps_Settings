@@ -70,6 +70,12 @@
         android:summary="@string/fast_charging_summary"
         settings:controller="com.android.settings.fuelgauge.FastChargingPreferenceController"/>
 
+    <Preference
+        android:key="battery_info"
+        android:title="@string/battery_info_title"
+        android:summary="@string/battery_info_summary"
+        android:fragment="com.android.settings.battery.BatteryInfoFragment" />
+
     <com.android.settings.fuelgauge.PowerGaugePreference
         android:key="last_full_charge"
         android:title="@string/battery_last_full_charge"
