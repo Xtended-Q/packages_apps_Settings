@@ -26,7 +26,18 @@ import com.android.settings.battery.BatteryHealthPreferenceController;
 import com.android.settings.battery.BatteryStatusPreferenceController;
 import com.android.settings.battery.BatteryTechPreferenceController;
 import com.android.settings.battery.ChargeCyclePreferenceController;
+import com.android.settings.battery.CapacityPreferenceController;
 import com.android.settings.battery.ChargeFullDesignPreferenceController;
+import com.android.settings.battery.ChargeFullPreferenceController;
+import com.android.settings.battery.ChargeTypePreferenceController;
+import com.android.settings.battery.CurrentMaxPreferenceController;
+import com.android.settings.battery.CurrentPreferenceController;
+import com.android.settings.battery.OriginalBatteryCapacityPreferenceController;
+import com.android.settings.battery.QcomBatteryVersionPreferenceController;
+import com.android.settings.battery.SysTempLevelPreferenceController;
+import com.android.settings.battery.VoltageMaxPreferenceController;
+import com.android.settings.battery.VoltagePreferenceController;
+
 import com.android.settingslib.core.AbstractPreferenceController;
 
 import androidx.lifecycle.Lifecycle;
@@ -70,6 +81,16 @@ public class BatteryInfoFragment extends DashboardFragment {
         controllers.add(new BatteryTechPreferenceController(context));
         controllers.add(new ChargeCyclePreferenceController(context));
         controllers.add(new ChargeFullDesignPreferenceController(context));
+        controllers.add(new ChargeFullPreferenceController(context));
+        controllers.add(new ChargeTypePreferenceController(context));
+        controllers.add(new CapacityPreferenceController(context));
+        controllers.add(new CurrentMaxPreferenceController(context));
+        controllers.add(new CurrentPreferenceController(context));
+        controllers.add(new OriginalBatteryCapacityPreferenceController(context));
+        controllers.add(new QcomBatteryVersionPreferenceController(context));
+        controllers.add(new SysTempLevelPreferenceController(context));
+        controllers.add(new VoltageMaxPreferenceController(context));
+        controllers.add(new VoltagePreferenceController(context));
         return controllers;
     }
 
