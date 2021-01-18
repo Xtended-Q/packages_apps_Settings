@@ -53,7 +53,8 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     contextualcards \
     settings-logtags \
     zxing-core-1.7 \
-    airbnb-lottie
+    airbnb-lottie \
+    vendor.lineage.fastcharge-V1.0-java
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
