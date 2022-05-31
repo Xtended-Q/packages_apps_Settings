@@ -21,7 +21,6 @@ import android.content.Context;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -30,7 +29,6 @@ import androidx.annotation.VisibleForTesting;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settingslib.graph.ThemedBatteryDrawable;
-import com.android.settingslib.graph.BatteryMeterDrawableBase;
 
 public class BatteryMeterView extends ImageView {
     @VisibleForTesting
@@ -64,9 +62,7 @@ public class BatteryMeterView extends ImageView {
         mForegroundColorFilter =new PorterDuffColorFilter(
                 Utils.getColorAttrDefaultColor(context, android.R.attr.colorForeground),
                 PorterDuff.Mode.SRC);
-        int userStyle = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.STATUS_BAR_BATTERY_STYLE, BatteryMeterDrawableBase.BATTERY_STYLE_PORTRAIT);
-        mDrawable = new BatteryMeterDrawable(context, frameColor, userStyle);
+        mDrawable = new BatteryMeterDrawable(context, frameColor);
         mDrawable.setColorFilter(mAccentColorFilter);
         setImageDrawable(mDrawable);
     }
@@ -78,12 +74,12 @@ public class BatteryMeterView extends ImageView {
     }
 
     public void setPowerSave(boolean powerSave) {
-        mDrawable.setPowerSave(powerSave);
+        mDrawable.setPowerSaveEnabled(powerSave);
         updateColorFilter();
     }
 
     public boolean getPowerSave() {
-        return mDrawable.getPowerSave();
+        return mDrawable.getPowerSaveEnabled();
     }
 
     public int getBatteryLevel() {
@@ -100,7 +96,7 @@ public class BatteryMeterView extends ImageView {
     }
 
     private void updateColorFilter() {
-        final boolean powerSaveEnabled = mDrawable.getPowerSave();
+        final boolean powerSaveEnabled = mDrawable.getPowerSaveEnabled();
         final int level = mDrawable.getBatteryLevel();
         if (powerSaveEnabled) {
             mDrawable.setColorFilter(mForegroundColorFilter);
@@ -111,32 +107,17 @@ public class BatteryMeterView extends ImageView {
         }
     }
 
-    public static class BatteryMeterDrawable extends BatteryMeterDrawableBase {
-        private int mIntrinsicWidth;
-        private int mIntrinsicHeight;
+    public static class BatteryMeterDrawable extends ThemedBatteryDrawable {
+        private final int mIntrinsicWidth;
+        private final int mIntrinsicHeight;
 
-        public BatteryMeterDrawable(Context context, int frameColor, int style) {
+        public BatteryMeterDrawable(Context context, int frameColor) {
             super(context, frameColor);
-            setMeterStyle(style);
-            switch (style) {
-                case BatteryMeterDrawableBase.BATTERY_STYLE_PORTRAIT:
-                    mIntrinsicWidth = mContext.getResources().getDimensionPixelSize(R.dimen.battery_meter_width);
-                    mIntrinsicHeight = mContext.getResources().getDimensionPixelSize(R.dimen.battery_meter_height);
-                    setShowPercent(false);
-                    break;
-                case BatteryMeterDrawableBase.BATTERY_STYLE_CIRCLE:
-                case BatteryMeterDrawableBase.BATTERY_STYLE_PA_CIRCLE:
-                    mIntrinsicWidth = mContext.getResources().getDimensionPixelSize(R.dimen.battery_meter_height);
-                    mIntrinsicHeight = mContext.getResources().getDimensionPixelSize(R.dimen.battery_meter_height);
-                    setShowPercent(false);
-                    break;
-                case BatteryMeterDrawableBase.BATTERY_STYLE_DOTTED_CIRCLE:
-                    mIntrinsicWidth = mContext.getResources().getDimensionPixelSize(R.dimen.battery_meter_height);
-                    mIntrinsicHeight = mContext.getResources().getDimensionPixelSize(R.dimen.battery_meter_height);
-                    setShowPercent(false);
-                    setDashEffect(new float[]{18,10}, 0);
-                    break;
-            }
+
+            mIntrinsicWidth = context.getResources()
+                    .getDimensionPixelSize(R.dimen.battery_meter_width);
+            mIntrinsicHeight = context.getResources()
+                    .getDimensionPixelSize(R.dimen.battery_meter_height);
         }
 
         public BatteryMeterDrawable(Context context, int frameColor, int width, int height) {
