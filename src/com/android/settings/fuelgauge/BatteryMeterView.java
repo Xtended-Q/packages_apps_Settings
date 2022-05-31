@@ -52,9 +52,6 @@ import com.android.settings.Utils;
 import com.android.settingslib.graph.ThemedBatteryDrawable;
 import com.android.settingslib.graph.BatteryMeterDrawableBase;
 
-import java.util.List;
-import java.util.Random;
-
 public class BatteryMeterView extends CardView {
 
     @VisibleForTesting
@@ -71,7 +68,7 @@ public class BatteryMeterView extends CardView {
     private IntentFilter ifilter;
     private Intent batteryStatus;
     private int status;
-    private String extra_status = "";
+   private String extra_status = "";
 
     private int mLevel;
 
@@ -95,16 +92,16 @@ public class BatteryMeterView extends CardView {
         ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         batteryStatus = context.registerReceiver(null, ifilter);
         status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        setLayoutParams(new ViewGroup.LayoutParams((int) dpToPx(120), (int) dpToPx(120)));
+        setLayoutParams(new ViewGroup.LayoutParams((int) dpToPx(165), (int) dpToPx(165)));
         waveView = new WaveView(context);
         progress_Text = new TextView(context);
-        progress_Text.setTextSize(30);
+        progress_Text.setTextSize(36);
         progress_Text.setTextColor(Utils.getColorAttrDefaultColor(context, android.R.attr.textColorSecondary));
         progress_Text.setGravity(Gravity.CENTER_HORIZONTAL);
         progress_Text.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         progress_Text.setAlpha((float) 0.7);
         LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         linearLayout.setGravity(Gravity.CENTER);
         linearLayout.addView(progress_Text);
@@ -122,7 +119,7 @@ public class BatteryMeterView extends CardView {
         mForegroundColorFilter = new PorterDuffColorFilter(
                 Utils.getColorAttrDefaultColor(context, android.R.attr.colorForeground),
                 PorterDuff.Mode.SRC);
-        mDrawable = new BatteryMeterDrawable(context, frameColor);
+        mDrawable = new BatteryMeterDrawable(context, frameColor, userStyle);
         mDrawable.setColorFilter(mAccentColorFilter);
     }
 
@@ -176,7 +173,7 @@ public class BatteryMeterView extends CardView {
         private final int mIntrinsicWidth;
         private final int mIntrinsicHeight;
 
-        public BatteryMeterDrawable(Context context, int frameColor) {
+        public BatteryMeterDrawable(Context context, int frameColor, int style) {
             super(context, frameColor);
 
             mIntrinsicWidth = context.getResources()
@@ -204,13 +201,13 @@ public class BatteryMeterView extends CardView {
     }
 
     class Wave extends View {
-        private final int WAVE_HEIGHT_HUGE = 30;
-        private final int WAVE_HEIGHT_LARGE = 14;
-        private final int WAVE_HEIGHT_MIDDLE = 8;
-        private final int WAVE_HEIGHT_LITTLE = 5;
-        private final float WAVE_LENGTH_MULTIPLE_LARGE = 1.25f;
-        private final float WAVE_LENGTH_MULTIPLE_MIDDLE = 0.9f;
-        private final float WAVE_LENGTH_MULTIPLE_LITTLE = 0.5f;
+        private final int WAVE_HEIGHT_HUGE = 21;
+        private final int WAVE_HEIGHT_LARGE = 10;
+        private final int WAVE_HEIGHT_MIDDLE = 5;
+        private final int WAVE_HEIGHT_LITTLE = 3;
+        private final float WAVE_LENGTH_MULTIPLE_LARGE = 1f;
+        private final float WAVE_LENGTH_MULTIPLE_MIDDLE = 0.7f;
+        private final float WAVE_LENGTH_MULTIPLE_LITTLE = 0.3f;
         private final float WAVE_HZ_FAST = 0.13f;
         private final float WAVE_HZ_NORMAL = 0.09f;
         private final float WAVE_HZ_SLOW = 0.05f;
@@ -402,7 +399,7 @@ public class BatteryMeterView extends CardView {
         protected static final int LARGE = 1;
         protected static final int MIDDLE = 2;
         protected static final int LITTLE = 3;
-        private int mAboveWaveColor = getRandomColor();
+        private int mAboveWaveColor = Utils.getColorAttrDefaultColor(this.getContext(), android.R.attr.colorAccent);
         private int mProgress;
         private int mWaveHeight = 0;
         private int mWaveMultiple = 3;
@@ -426,18 +423,13 @@ public class BatteryMeterView extends CardView {
             setProgress(mProgress);
         }
 
-        public int getRandomColor(){
-        Random rnd = new Random();
-           return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        }
-
         public void setBatteryPowerSave(boolean powerSave) {
             if (powerSave) {
                 mAboveWaveColor = Utils.getColorAttrDefaultColor(this.getContext(), android.R.attr.colorForeground);
                 mWave.setAboveWaveColor(mAboveWaveColor);
                 mWave.setBlowWaveColor(mAboveWaveColor);
             } else {
-                mAboveWaveColor = getRandomColor();
+                mAboveWaveColor = Utils.getColorAttrDefaultColor(this.getContext(), android.R.attr.colorAccent);
                 mWave.setAboveWaveColor(mAboveWaveColor);
                 mWave.setBlowWaveColor(mAboveWaveColor);
             }
@@ -449,7 +441,7 @@ public class BatteryMeterView extends CardView {
                 mWave.setAboveWaveColor(mAboveWaveColor);
                 mWave.setBlowWaveColor(mAboveWaveColor);
             } else {
-                mAboveWaveColor = getRandomColor();
+                mAboveWaveColor = Utils.getColorAttrDefaultColor(this.getContext(), android.R.attr.colorAccent);
                 mWave.setAboveWaveColor(mAboveWaveColor);
                 mWave.setBlowWaveColor(mAboveWaveColor);
             }
