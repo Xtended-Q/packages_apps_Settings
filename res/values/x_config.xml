@@ -32,7 +32,6 @@
     <!-- Battery Health -->
     <string name="config_batCurCap"></string>
     <string name="config_batDesCap"></string>
-    <string name="config_batChargeCycle"></string>
 
     <!-- Ultra Power Saving -->
     <bool name="config_supportUltraPowerSaving">true</bool>

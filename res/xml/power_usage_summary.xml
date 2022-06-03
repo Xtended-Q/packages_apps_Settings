@@ -96,9 +96,4 @@
         android:title="@string/current_battery_capacity"
         android:selectable="false" />
 
-    <com.android.settings.fuelgauge.PowerGaugePreference
-        android:key="battery_charge_cycles"
-        android:title="@string/battery_charge_cycles"
-        android:selectable="false" />
-
 </PreferenceScreen>
